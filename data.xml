@@ -1,0 +1,11 @@
+﻿<config>
+	<accounts>2</accounts>
+	<account0>
+		<username>user0</username>
+		<password>pass0</password>
+	</account0>
+	<account1>
+		<username>user1</username>
+		<password>pass1</password>
+	</account1>
+</config>
