@@ -3,10 +3,27 @@ $(function () {
 	var accounts = [];
 	var configFile = [];
 	var XMLdata = [];
+	var AdminPanelPos = "down";
 	$.each($('.accounts'), function(){ accounts.push( $(this).data() ); } );
 	
 	$('login_button').click();
 	$('#loadFileButton').click( LoadButtonClicked );
+	$('#sliderButton').click( SliderButtonClicked );
+	
+	function SliderButtonClicked() {
+		if(AdminPanelPos == "down")
+		{
+			$(this).text("v Admin v");
+			AdminPanelPos = "up";
+			$("#configScreen").animate({ top: "-95px" }, 1000);
+		}
+		else
+		{
+			$(this).text("^ Admin ^");
+			AdminPanelPos = "down";
+			$("#configScreen").animate({ top: "0px" }, 1000);
+		}
+	}
 	
 	function LoadButtonClicked() {
 		console.log('Load Button clicked');

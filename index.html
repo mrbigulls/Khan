@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<link href="styles.css" rel="stylesheet"/>
+		<link href="styles.css" type="text/css" rel="stylesheet"/>
 		<script src="jquery-2.1.1.min.js"></script>
 		<script src="session.js"></script>
 	</head>
@@ -15,8 +15,11 @@
 		Password:<input type="password" id="login_password" />
 		<button id="login_button">Login</button>
 	</div>
-	<div class="displayArea" id="configScreen">
-		Config file:<input type="file" id="configFile"/><button id="loadFileButton">Load Config File</button>
+	<div id="configScreen" class="dropPanel">
+		<div class="displayFrame">
+			Config file:<input type="file" id="configFile"/><button id="loadFileButton">Load Config File</button>
+		</div>
+		<button id="sliderButton" class="sliderButton"> ^ Admin ^ </button>
 	</div>
 	</body>
 </html>

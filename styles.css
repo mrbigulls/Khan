@@ -1,4 +1,25 @@
-.xclass {
-    color: red;
-    text-align: center;
+.dropPanel {
+	border: solid;
+	background-color: #aaaaaa;
+	text-align: center;
+	user-select: none;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	border-color: black;
+	border-radius: blue;
+	border-width: 1px;
+	width: 100%;
+	height: 100px;
+	z-index: 100;
+}
+
+.sliderButton {
+	position: absolute;
+	width: 10%;
+	bottom: -15px;
+	background-color: #000000;
+	color: #ffffff;
+	text-align: center;
+	margin-right: 40%;
 }
