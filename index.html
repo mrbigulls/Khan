@@ -5,21 +5,28 @@
 		<script src="session.js"></script>
 	</head>
 	<body>
-	<div class="hidden" id="accountDataWrapper">
-		<input type="hidden" class="hidden accounts" data-username="user1" data-password="pass1" />
-		<input type="hidden" class="hidden accounts" data-username="user2" data-password="pass2" />
-		<input type="hidden" class="hidden accounts" data-username="user2" data-password="pass3" />
-	</div>
 	<br />
-	<div class="displayArea" id="loginScreen">
-		Username:<input type="text" id="login_username" />
-		Password:<input type="password" id="login_password" />
-		<button id="login_button">Login</button>
+	<div class="displayArea" id="userScreen">
+		Username:<input type="text" id="login_username" class="loginControls" />
+		Password:<input type="password" id="login_password" class="loginControls" />
+		<button id="login_button" class="loginControls">Login</button>
+		<div id="loginFeedback"></div>
 	</div>
 	<div id="configScreen" class="dropPanel">
 		<br />
 		<div class="displayFrame">
-			Config file:<input type="file" id="configFile"/><button id="loadFileButton">Load Config File</button>
+			Config file:<input type="file" id="configFile" class="adminInput"/>
+			Feedback Condition:
+			<select id="feedbackCondition" class="adminInput">
+				<option value=''>-</option>
+				<option value='NMP'>NMP</option>
+				<option value='MP'>MP</option>
+				<option value='MPSF'>MPSF</option>
+			</select>
+			<button id="loadFileButton">Conduct Session</button>
+			<br />
+			<br />
+			<div id="adminMessage"></div>
 		</div>
 		<button id="sliderButton" class="sliderButton"> ^ Admin ^ </button>
 	</div>
