@@ -8,11 +8,30 @@ $(function () {
 
 	var ParticipantAccounts = [];
 	var Condition = [];
-	var SessionBlocks = [];
+	var GroupBlocksPerSession = [];
+	var TrialsPerBlock = 0;
 	var Outcomes = [];
 	var Groupings = [];
 	var Words = [];
 	var Profiles = [];
+	var StimulusDelay = 0;
+	var FeedbackDelay = 0;
+	var PositiveFeedbackMessage = '';
+	var NegativeFeedbackMessage = '';
+	var GroupingOrder = [];
+	var TrialBlocksPerSession = 0;
+	var TrialBlockTimeout = 0;
+	var KillIt = false;
+	
+	var CurrentOutcome = [];
+	var CurrentWordsDisplayed = [];
+	var CurrentTranslationsClicked = [];
+	var CurrentCorrectChoices = [];
+	var CompletedTrialBlocks = [];
+	var CurrentTrialIndex = 0;
+	var CurrentTrialBlockIndex = 0;
+	var CurrentWrongWord1 = {};
+	var CurrentWrongWord2 = {};
 	
 	$('#login_button').click( LoginButtonClicked );
 	$('#loadFileButton').click( LoadButtonClicked );
@@ -20,19 +39,156 @@ $(function () {
 	$('.loginControls').prop('disabled', true);
 	$('#loadFileButton').prop('disabled', true);
 	$('.adminInput').change( checkSessionButtonReady );
+	$('.startHide').hide();
+	$('.startHide').prop('disabled', true);
+	$('#BeginTrialBlockButton').click( BeginTrialBlockButtonClick );
+	$('.OptionContainer').click( SelectOption );
 	
-	function Session(outcome, groupSize) {
-		$('#userScreen').html('You have been placed in a group of 2 members in this trial. If you and the other group member meet the goal of making X selections before the end of the trial block, each one of you will earn a bonus.  Bonuses may be exchanged for money at the end of the session.  This means you must make at least X correct responses to meet your individual goal.  At the end of the trial, you and the other group member will find out whether all members in the group met their individual goal or not.');
+	function TimeoutTrialBlock(tbi) {
+		setTimeout( function() {
+			if(CurrentTrialBlockIndex <= tbi)
+			{
+				console.log('Timed out TrialBlock!');
+				KillIt = true;
+				$('.OptionContainer').prop('disabled', true);
+				$('#OptionsScreen').hide();
+				EndTrialBlock();
+			}
+		}, TrialBlockTimeout);
+	}
+	
+	function EndSession() {
+		console.log('End Session!');
+	}
+	
+	function EndTrialBlock() {
+		console.log('Ending trial block');
+		$('#TrialScreen').hide();
+		CurrentTrialBlockIndex++;
+		CompletedTrialBlocks.push({
+			WordsDisplayed: CurrentWordsDisplayed,
+			TranslationsClicked: CurrentTranslationsClicked,
+			CorrectChoices: CurrentCorrectChoices
+		});
+		
+		CurrentTrialIndex = 0;
+		CurrentWordsDisplayed = [];
+		CurrentTranslationsClicked = [];
+		CurrentCorrectChoices = [];
+		
+		if(CurrentTrialBlockIndex < TrialBlocksPerSession)
+		{
+			StartTrialBlock();
+		}
+		else
+		{
+			EndSession();
+		}
+	}
+	
+	function EndTrial() {
+		if(KillIt)
+		{
+			KillIt = false;
+			return;
+		}
+		console.log('Ending trial ' + CurrentTrialIndex);
+		CurrentTrialIndex++;
+		if(CurrentTrialIndex < TrialsPerBlock)
+		{
+			ConductTrial();
+		}
+		else
+		{
+			EndTrialBlock();
+		}
+	}
+	
+	function PresentFeedback() {
+		$('#OptionsScreen').hide();
+		if(KillIt)
+		{
+			KillIt = false;
+			return;
+		}
+		if(CurrentCorrectChoices[CurrentTrialIndex] == true)
+		{
+			$('#TrialScreen').html(PositiveFeedbackMessage);
+		}
+		else
+		{
+			$('#TrialScreen').html(NegativeFeedbackMessage);
+		}
+		console.log('Waiting ' + FeedbackDelay + 'ms');
+		$('#TrialScreen').show();
+		setTimeout(EndTrial, FeedbackDelay);
+	}
+	
+	function SelectOption() {
+		$('.OptionContainer').prop('disabled', true);
+		CurrentTranslationsClicked.push($(this).text());
+		CurrentCorrectChoices.push(CurrentTranslationsClicked[CurrentTrialIndex] == CurrentWordsDisplayed[CurrentTrialIndex].translate);
+		PresentFeedback();
+	}
+	
+	function DisplayOptions() {
+		if(KillIt)
+		{
+			KillIt = false;
+			return;
+		}
+		$('.OptionContainer').prop('disabled', false);
+		var displayWords = [ CurrentWordsDisplayed[CurrentTrialIndex], CurrentWrongWord1, CurrentWrongWord2 ];
+		displayWords = Shuffle(displayWords);
+		console.log(displayWords);
+		$('#Option1').html(displayWords[0].translate);
+		$('#Option2').html(displayWords[1].translate);
+		$('#Option3').html(displayWords[2].translate);
+		$('#TrialScreen').hide();
+		$('#OptionContainer').show();
+		$('#OptionsScreen').show();
+	}
+	
+	function ConductTrial() {
+		if(KillIt)
+		{
+			KillIt = false;
+			return;
+		}
+		console.log('Conduct trial ' + CurrentTrialIndex);
+		var shuffledWords = Shuffle(Words);
+		CurrentWordsDisplayed.push(shuffledWords[0]);
+		CurrentWrongWord1 = shuffledWords[1];
+		CurrentWrongWord2 = shuffledWords[2];
+		$('#TrialScreen').html(shuffledWords[0].display);
+		console.log('Waiting ' + StimulusDelay + 'ms');
+		$('#TrialScreen').show();
+		setTimeout(DisplayOptions, StimulusDelay);
+	}
+	
+	function BeginTrialBlockButtonClick() {
+		$('#blockIntroScreen').hide();
+		TimeoutTrialBlock(CurrentTrialBlockIndex);
+		ConductTrial();
+	}
+	
+	function StartTrialBlock() {
+		KillIt = false;
+		console.log('Start TrialBlock ' + CurrentTrialBlockIndex);
+		CurrentOutcome = Outcomes[Math.floor(Math.random() * Outcomes.length)];
+		$('#blockIntroMessage').text('INTRO MESSAGE HERE.');
+		$('#blockIntroScreen').show();
+		CurrentTrialIndex = 0;
 	}
 	
 	function StartSession() {
 		$('#userScreen').html('');
-		for(var i = 0; i < SessionBlocks; i++)
+		TrialBlocksPerSession = GroupBlocksPerSession*Groupings.length;
+		for(var i = 0; i < GroupBlocksPerSession; i++)
 		{
-			var outcome = Outcomes[Math.floor(Math.random() * Outcomes.length)];
-			var groupSize = Groupings[Math.floor(Math.random() * Groupings.length)];
-			Session(outcome, groupSize);
+			GroupingOrder = GroupingOrder + Shuffle(Groupings);
 		}
+		StartTrialBlock();
 	}
 	
 	function checkSessionButtonReady() {
@@ -62,7 +218,6 @@ $(function () {
 	}
 	
 	function LoginButtonClicked() {
-		console.log('login clicked');
 		var u = $('#login_username').val();
 		var p = $('#login_password').val();
 		if( ValidateCredentials(u, p) )
@@ -82,8 +237,8 @@ $(function () {
 		{
 			if( sessionReady )
 			{
-				$(this).text("x Admin x");
 				$(this).prop('disabled', true);
+				$(this).css('color', '#000000');
 			}
 			else
 			{
@@ -114,10 +269,16 @@ $(function () {
 	
 	function FileLoaded() {
 		Condition = $('#feedbackCondition').val();
+		TrialBlockTimeout = XMLdata.find('trialblocktimeout').text();
+		StimulusDelay = XMLdata.find('stimulusdelay').text();
+		FeedbackDelay = XMLdata.find('feedbackdelay').text();
+		PositiveFeedbackMessage = XMLdata.find('positivefeedback').text();
+		NegativeFeedbackMessage = XMLdata.find('negativefeedback').text();
 		XMLdata.find('accounts').children().each(function(){
 			ParticipantAccounts.push({ username: $(this).find('username').text(), password: $(this).find('password').text() });
 		});
-		SessionBlocks = XMLdata.find('sessionblocks').text();
+		GroupBlocksPerSession = XMLdata.find('groupingblockspersession').text();
+		TrialsPerBlock = XMLdata.find('trialsperblock').text();
 		XMLdata.find('outcomes').children().each(function(){
 			Outcomes.push( $(this).text() );
 		});
@@ -132,4 +293,19 @@ $(function () {
 		$('.loginControls').prop('disabled', false);
 		sessionReady = true;
 	};
+	
+	function Shuffle(source_array) {
+		var array = source_array.slice();
+		var currentIndex = array.length, temporaryValue, randomIndex ;
+
+		while (0 !== currentIndex) {
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+		}
+
+		return array;
+	}
 });

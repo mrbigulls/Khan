@@ -6,12 +6,6 @@
 	</head>
 	<body>
 	<br />
-	<div class="displayArea" id="userScreen">
-		Username:<input type="text" id="login_username" class="loginControls" />
-		Password:<input type="password" id="login_password" class="loginControls" />
-		<button id="login_button" class="loginControls">Login</button>
-		<div id="loginFeedback"></div>
-	</div>
 	<div id="configScreen" class="dropPanel">
 		<br />
 		<div class="displayFrame">
@@ -29,6 +23,26 @@
 			<div id="adminMessage"></div>
 		</div>
 		<button id="sliderButton" class="sliderButton"> ^ Admin ^ </button>
+	</div>
+	<div class="displayArea userPanel" id="userScreen">
+		Username:<input type="text" id="login_username" class="loginControls" />
+		Password:<input type="password" id="login_password" class="loginControls" />
+		<button id="login_button" class="loginControls">Login</button>
+		<div id="loginFeedback"></div>
+	</div>
+	<div id="blockIntroScreen" class="startHide userPanel">
+		<div id="blockIntroMessage"></div>
+		<br />
+		<button id="BeginTrialBlockButton">Click to begin</button>
+	</div>
+	<div id="TrialScreen" class="startHide userPanel">
+	</div>
+	<div id="OptionsScreen" class="startHide userPanel">
+		<div id="OptionsWrapper">
+			<button id="Option1" class="OptionContainer"></button>
+			<button id="Option2" class="OptionContainer"></button>
+			<button id="Option3" class="OptionContainer"></button>
+		</div>
 	</div>
 	</body>
 </html>

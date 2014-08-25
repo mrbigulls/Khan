@@ -1,3 +1,24 @@
+#OptionsWrapper{
+	width: 50%;
+	margin-left: 25%;
+}
+
+.OptionContainer{
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-left: 20px;
+	margin-right: 20px;
+	float: right;
+	background-color: #eeeeee;
+	position: relative;
+	width: 15%;
+}
+
+#TrialScreen{
+	text-align: center;
+	padding-top: 100px;
+}
+
 .dropPanel {
 	border: solid;
 	background-color: #aaaaaa;
@@ -9,9 +30,14 @@
 	border-color: black;
 	border-radius: blue;
 	border-width: 1px;
-	width: 100%;
+	width: 99%;
 	height: 100px;
 	z-index: 100;
+}
+
+.userPanel {
+	position: fixed;
+	width: 90%;
 }
 
 .sliderButton {
@@ -21,7 +47,7 @@
 	background-color: #000000;
 	color: #ffffff;
 	text-align: center;
-	margin-right: 40%;
+	left: 45%;
 }
 
 #adminMessage{

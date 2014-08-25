@@ -1,5 +1,11 @@
 ﻿<config>
-	<sessionblocks>12</sessionblocks>
+	<positivefeedback>Correct</positivefeedback>
+	<negativefeedback>Incorrect</negativefeedback>
+	<trialblocktimeout>120000</trialblocktimeout>
+	<stimulusdelay>1000</stimulusdelay>
+	<feedbackdelay>2500</feedbackdelay>
+	<groupingblockspersession>3</groupingblockspersession>
+	<trialsperblock>4</trialsperblock>
 	<accounts>
 		<account>
 			<username>user0</username>
@@ -24,12 +30,20 @@
 	</groupings>
 	<words>
 		<word>
-			<display>E-1</display>
-			<translate>A-1/</translate>
+			<display>A-1</display>
+			<translate>E-1</translate>
 		</word>
 		<word>
-			<display>E-2</display>
-			<translate>A-2</translate>
+			<display>A-2</display>
+			<translate>E-2</translate>
+		</word>
+		<word>
+			<display>A-3</display>
+			<translate>E-3</translate>
+		</word>
+		<word>
+			<display>A-4</display>
+			<translate>E-4</translate>
 		</word>
 	</words>
 	<profiles>
