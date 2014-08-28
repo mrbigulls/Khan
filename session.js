@@ -22,11 +22,15 @@ $(function () {
 	var TrialBlocksPerSession = 0;
 	var TrialBlockTimeout = 0;
 	var KillIt = false;
+	var TrialBlockFeedbackMessage = ''
+	var TrialBlockIntroMessage = ''
+	var EndOfSessionMessage = '';
 	
 	var CurrentOutcome = [];
 	var CurrentWordsDisplayed = [];
 	var CurrentTranslationsClicked = [];
 	var CurrentCorrectChoices = [];
+	var CurrentCorrectCount = 0;
 	var CompletedTrialBlocks = [];
 	var CurrentTrialIndex = 0;
 	var CurrentTrialBlockIndex = 0;
@@ -36,8 +40,10 @@ $(function () {
 	$('#login_button').click( LoginButtonClicked );
 	$('#loadFileButton').click( LoadButtonClicked );
 	$('#sliderButton').click( SliderButtonClicked );
+	$('#BlockEndButton').click( BlockEndButtonClicked );
 	$('.loginControls').prop('disabled', true);
 	$('#loadFileButton').prop('disabled', true);
+	$('#BlockEndButton').prop('disabled', true);
 	$('.adminInput').change( checkSessionButtonReady );
 	$('.startHide').hide();
 	$('.startHide').prop('disabled', true);
@@ -58,7 +64,43 @@ $(function () {
 	}
 	
 	function EndSession() {
+		$('#TrialScreen').html( EndOfSessionMessage );
+		$('#TrialScreen').show();
+		$('.adminInput').prop('disabled', true);
+		$('#sliderButton').prop('disabled', false);
+		$('#sliderButton').css('color', '#ff0000');
 		console.log('End Session!');
+	}
+	
+	function BlockEndButtonClicked() {
+		$('#BlockEndScreen').hide();
+		$('#BlockEndButton').prop('disabled', true);
+		$('#BlockEndScreenMessage').html('');
+		if(CurrentTrialBlockIndex < TrialBlocksPerSession)
+		{
+			StartTrialBlock();
+		}
+		else
+		{
+			EndSession();
+		}
+	}
+	
+	function PresentTrialBlockResults() {
+		feedbackMessage = TrialBlockFeedbackMessage;
+		var currentWrong = TrialsPerBlock - CurrentCorrectCount;
+		var pesonalFeedback = 'You made ' + CurrentCorrectCount + ' correct inputs and ' + currentWrong + ' incorrect inputs.';
+		$('#BlockEndScreenMessage').html(TrialBlockFeedbackMessage + ' ' + personalFeedback);
+		if(Condition == 'MPSF')
+		{
+			$('#BlockEndScreenMessage').append('Specific outcome: ' + Outcomes[CurrentTrialBlockIndex]);
+		}
+		else
+		{
+			$('#BlockEndScreenMessage').append('Not specific outcome: ' + Outcomes[CurrentTrialBlockIndex]);
+		}
+		$('#BlockEndButton').prop('disabled', false);
+		$('#BlockEndScreen').show();
 	}
 	
 	function EndTrialBlock() {
@@ -75,15 +117,7 @@ $(function () {
 		CurrentWordsDisplayed = [];
 		CurrentTranslationsClicked = [];
 		CurrentCorrectChoices = [];
-		
-		if(CurrentTrialBlockIndex < TrialBlocksPerSession)
-		{
-			StartTrialBlock();
-		}
-		else
-		{
-			EndSession();
-		}
+		PresentTrialBlockResults();
 	}
 	
 	function EndTrial() {
@@ -113,6 +147,7 @@ $(function () {
 		}
 		if(CurrentCorrectChoices[CurrentTrialIndex] == true)
 		{
+			CurrentCorrectCount = CurrentCorrectCount + 1;
 			$('#TrialScreen').html(PositiveFeedbackMessage);
 		}
 		else
@@ -176,7 +211,12 @@ $(function () {
 		KillIt = false;
 		console.log('Start TrialBlock ' + CurrentTrialBlockIndex);
 		CurrentOutcome = Outcomes[Math.floor(Math.random() * Outcomes.length)];
-		$('#blockIntroMessage').text('INTRO MESSAGE HERE.');
+		var introMessage = TrialBlockIntroMessage;
+		if(Condition != 'NMP')
+		{
+			introMessage = introMessage + ' Group size: ' + Groupings[CurrentTrialBlockIndex];
+		}
+		$('#blockIntroMessage').text(introMessage);
 		$('#blockIntroScreen').show();
 		CurrentTrialIndex = 0;
 	}
@@ -269,6 +309,9 @@ $(function () {
 	
 	function FileLoaded() {
 		Condition = $('#feedbackCondition').val();
+		EndOfSessionMessage = = XMLdata.find('endofsessionmessage').text();
+		TrialBlockIntroMessage = XMLdata.find('trialblockintromessages').find(Condition).text();
+		TrialBlockFeedbackMessage = XMLdata.find('trialblockfeedbackmessages').find(Condition).text();
 		TrialBlockTimeout = XMLdata.find('trialblocktimeout').text();
 		StimulusDelay = XMLdata.find('stimulusdelay').text();
 		FeedbackDelay = XMLdata.find('feedbackdelay').text();

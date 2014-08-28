@@ -1,4 +1,15 @@
 ﻿<config>
+	<endofsessionmessage>The session has ended.  Thank you.</endofsessionmessage>
+	<trialblockintromessages>
+		<NMP>No member preview intro message.</NMP>
+		<MP>Member preview intro message.</MP>
+		<MPSF>Member preview with specific feedback intro message.</MPSF>
+	</trialblockintromessages>
+	<trialblockfeedbackmessages>
+		<NMP>No member preview feedback message.</NMP>
+		<MP>Member preview feedback message.</MP>
+		<MPSF>Member preview with specific feedback message.</MPSF>
+	</trialblockfeedbackmessages>
 	<positivefeedback>Correct</positivefeedback>
 	<negativefeedback>Incorrect</negativefeedback>
 	<trialblocktimeout>120000</trialblocktimeout>
