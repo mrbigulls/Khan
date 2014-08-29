@@ -11,6 +11,7 @@ $(function () {
 	var GroupBlocksPerSession = [];
 	var TrialsPerBlock = 0;
 	var Outcomes = [];
+	var OrderedOutcomes = [];
 	var Groupings = [];
 	var Words = [];
 	var Profiles = [];
@@ -26,7 +27,6 @@ $(function () {
 	var TrialBlockIntroMessage = ''
 	var EndOfSessionMessage = '';
 	
-	var CurrentOutcome = [];
 	var CurrentWordsDisplayed = [];
 	var CurrentTranslationsClicked = [];
 	var CurrentCorrectChoices = [];
@@ -63,12 +63,31 @@ $(function () {
 		}, TrialBlockTimeout);
 	}
 	
+	function ClickShowResults() {
+		var ResultsMarkup = '<table><tr><td>User: ' + User + '</td><td>Condition: ' + Condition + '</td></tr></table><br />';
+		for(var i = 0; i < CompletedTrialBlocks.length; i++)
+		{
+			ResultsMarkup = ResultsMarkup + '<table><tr><td>Trialblock: ' + i + '</td><td>Outcome: ' + OrderedOutcomes[i] + '</td><td>Grouping: ' + GroupingOrder[i] + '</td><td></tr>';
+			ResultsMarkup = ResultsMarkup + '<tr><td>Trial</td><td>Presented</td><td>Clicked</td></tr>';
+			for(var j = 0; j < TrialsPerBlock; j++)
+			{
+				ResultsMarkup = ResultsMarkup + '<tr><td>' + j + '</td><td>' + CompletedTrialBlocks[i].WordsDisplayed[j].display + '</td><td>' + CompletedTrialBlocks[i].TranslationsClicked[j] + '</td></tr>';
+			}
+			ResultsMarkup = ResultsMarkup + '</table><br />';
+		}
+		var w = window.open();
+		$(w.document.body).html(ResultsMarkup);
+	}
+	
 	function EndSession() {
 		$('#TrialScreen').html( EndOfSessionMessage );
 		$('#TrialScreen').show();
 		$('.adminInput').prop('disabled', true);
-		$('#sliderButton').prop('disabled', false);
+		$('#loadFileButton').prop('disabled', true);
+		$('#adminMessage').text('Click here to view results.');
+		$('#adminMessage').click( ClickShowResults );
 		$('#sliderButton').css('color', '#ff0000');
+		$('#sliderButton').prop('disabled', false);
 		console.log('End Session!');
 	}
 	
@@ -89,24 +108,24 @@ $(function () {
 	function PresentTrialBlockResults() {
 		feedbackMessage = TrialBlockFeedbackMessage;
 		var currentWrong = TrialsPerBlock - CurrentCorrectCount;
-		var pesonalFeedback = 'You made ' + CurrentCorrectCount + ' correct inputs and ' + currentWrong + ' incorrect inputs.';
+		var personalFeedback = 'You made ' + CurrentCorrectCount + ' correct inputs and ' + currentWrong + ' incorrect inputs.';
 		$('#BlockEndScreenMessage').html(TrialBlockFeedbackMessage + ' ' + personalFeedback);
 		if(Condition == 'MPSF')
 		{
-			$('#BlockEndScreenMessage').append('Specific outcome: ' + Outcomes[CurrentTrialBlockIndex]);
+			$('#BlockEndScreenMessage').append('Specific outcome: ' + OrderedOutcomes[CurrentTrialBlockIndex]);
 		}
 		else
 		{
-			$('#BlockEndScreenMessage').append('Not specific outcome: ' + Outcomes[CurrentTrialBlockIndex]);
+			$('#BlockEndScreenMessage').append('Not specific outcome: ' + OrderedOutcomes[CurrentTrialBlockIndex]);
 		}
 		$('#BlockEndButton').prop('disabled', false);
+		CurrentTrialBlockIndex++;
 		$('#BlockEndScreen').show();
 	}
 	
 	function EndTrialBlock() {
 		console.log('Ending trial block');
 		$('#TrialScreen').hide();
-		CurrentTrialBlockIndex++;
 		CompletedTrialBlocks.push({
 			WordsDisplayed: CurrentWordsDisplayed,
 			TranslationsClicked: CurrentTranslationsClicked,
@@ -210,15 +229,16 @@ $(function () {
 	function StartTrialBlock() {
 		KillIt = false;
 		console.log('Start TrialBlock ' + CurrentTrialBlockIndex);
-		CurrentOutcome = Outcomes[Math.floor(Math.random() * Outcomes.length)];
+		OrderedOutcomes.push(Outcomes[Math.floor(Math.random() * Outcomes.length)]);
 		var introMessage = TrialBlockIntroMessage;
 		if(Condition != 'NMP')
 		{
-			introMessage = introMessage + ' Group size: ' + Groupings[CurrentTrialBlockIndex];
+			introMessage = introMessage + ' Group size: ' + GroupingOrder[CurrentTrialBlockIndex];
 		}
 		$('#blockIntroMessage').text(introMessage);
 		$('#blockIntroScreen').show();
 		CurrentTrialIndex = 0;
+		CurrentCorrectCount = 0;
 	}
 	
 	function StartSession() {
@@ -226,8 +246,9 @@ $(function () {
 		TrialBlocksPerSession = GroupBlocksPerSession*Groupings.length;
 		for(var i = 0; i < GroupBlocksPerSession; i++)
 		{
-			GroupingOrder = GroupingOrder + Shuffle(Groupings);
+			$.merge(GroupingOrder, Shuffle(Groupings));
 		}
+		console.log('GroupingOrder: ' + GroupingOrder);
 		StartTrialBlock();
 	}
 	
@@ -280,10 +301,7 @@ $(function () {
 				$(this).prop('disabled', true);
 				$(this).css('color', '#000000');
 			}
-			else
-			{
-				$(this).text("v Admin v");
-			}
+			$(this).text("v Admin v");
 			AdminPanelPos = "up";
 			$("#configScreen").animate({ top: "-95px" }, 1000);
 		}
@@ -309,7 +327,7 @@ $(function () {
 	
 	function FileLoaded() {
 		Condition = $('#feedbackCondition').val();
-		EndOfSessionMessage = = XMLdata.find('endofsessionmessage').text();
+		EndOfSessionMessage = XMLdata.find('endofsessionmessage').text();
 		TrialBlockIntroMessage = XMLdata.find('trialblockintromessages').find(Condition).text();
 		TrialBlockFeedbackMessage = XMLdata.find('trialblockfeedbackmessages').find(Condition).text();
 		TrialBlockTimeout = XMLdata.find('trialblocktimeout').text();
@@ -338,17 +356,15 @@ $(function () {
 	};
 	
 	function Shuffle(source_array) {
-		var array = source_array.slice();
-		var currentIndex = array.length, temporaryValue, randomIndex ;
-
-		while (0 !== currentIndex) {
-		randomIndex = Math.floor(Math.random() * currentIndex);
-		currentIndex -= 1;
-		temporaryValue = array[currentIndex];
-		array[currentIndex] = array[randomIndex];
-		array[randomIndex] = temporaryValue;
+		var arr = [];
+		
+		for(var i = 0; i < source_array.length; i++)
+		{
+			arr.push( source_array[i] );
 		}
-
-		return array;
+		
+		for (var j, x, i = arr.length; i; j = parseInt(Math.random() * i), x = arr[--i], arr[i] = arr[j], arr[j] = x);
+		
+		return arr;
 	}
 });
