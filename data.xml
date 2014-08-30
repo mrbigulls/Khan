@@ -29,9 +29,9 @@
 	</accounts>
 	<outcomes>
 		<outcome>1</outcome>
-		<outcome>30%</outcome>
-		<outcome>60%</outcome>
-		<outcome>90%</outcome>
+		<outcome>0.3</outcome>
+		<outcome>0.6</outcome>
+		<outcome>0.9</outcome>
 	</outcomes>
 	<groupings>
 		<grouping>2</grouping>
@@ -58,7 +58,101 @@
 		</word>
 	</words>
 	<profiles>
-		<profile>1</profile>
-		<profile>2</profile>
+		<profile>
+			<name>Name1</name>
+			<image>Image1</image>
+		</profile>
+		<profile>
+			<name>Name2</name>
+			<image>Image2</image>
+		</profile>
+		<profile>
+			<name>Name3</name>
+			<image>Image3</image>
+		</profile>
+		<profile>
+			<name>Name4</name>
+			<image>Image4</image>
+		</profile>
+		<profile>
+			<name>Name5</name>
+			<image>Image5</image>
+		</profile>
+		<profile>
+			<name>Name6</name>
+			<image>Image6</image>
+		</profile>
+		<profile>
+			<name>Name7</name>
+			<image>Image7</image>
+		</profile>
+		<profile>
+			<name>Name8</name>
+			<image>Image8</image>
+		</profile>
+		<profile>
+			<name>Name9</name>
+			<image>Image9</image>
+		</profile>
+		<profile>
+			<name>Name10</name>
+			<image>Image10</image>
+		</profile>
+		<profile>
+			<name>Name11</name>
+			<image>Image11</image>
+		</profile>
+		<profile>
+			<name>Name12</name>
+			<image>Image12</image>
+		</profile>
+		<profile>
+			<name>Name13</name>
+			<image>Image13</image>
+		</profile>
+		<profile>
+			<name>Name14</name>
+			<image>Image14</image>
+		</profile>
+		<profile>
+			<name>Name15</name>
+			<image>Image15</image>
+		</profile>
+		<profile>
+			<name>Name16</name>
+			<image>Image16</image>
+		</profile>
+		<profile>
+			<name>Name17</name>
+			<image>Image17</image>
+		</profile>
+		<profile>
+			<name>Name18</name>
+			<image>Image18</image>
+		</profile>
+		<profile>
+			<name>Name19</name>
+			<image>Image19</image>
+		</profile>
+		<profile>
+			<name>Name20</name>
+			<image>Image20</image>
+		</profile>
+		<profile>
+			<name>Name21</name>
+			<image>Image21</image>
+		</profile>
+		<profile>
+			<name>Name22</name>
+			<image>Image22</image>
+		</profile>
+		<profile>
+			<name>Name23</name>
+			<image>Image23</image>
+		</profile>
+		<profile>
+			<name>Name24</name>
+			<image>Image24</image>
+		</profile>
 	</profiles>
 </config>

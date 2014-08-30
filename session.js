@@ -64,14 +64,14 @@ $(function () {
 	}
 	
 	function ClickShowResults() {
-		var ResultsMarkup = '<table><tr><td>User: ' + User + '</td><td>Condition: ' + Condition + '</td></tr></table><br />';
+		var ResultsMarkup = '<table class=\'data-table\'><tr class=\'data-table\'><td class=\'data-table\'>User: ' + User + '</td><td class=\'data-table\'>Condition: ' + Condition + '</td></tr></table><br />';
 		for(var i = 0; i < CompletedTrialBlocks.length; i++)
 		{
-			ResultsMarkup = ResultsMarkup + '<table><tr><td>Trialblock: ' + i + '</td><td>Outcome: ' + OrderedOutcomes[i] + '</td><td>Grouping: ' + GroupingOrder[i] + '</td><td></tr>';
-			ResultsMarkup = ResultsMarkup + '<tr><td>Trial</td><td>Presented</td><td>Clicked</td></tr>';
-			for(var j = 0; j < TrialsPerBlock; j++)
+			ResultsMarkup = ResultsMarkup + '<table class=\'data-table\'><tr class=\'data-table\'><td class=\'data-table\'>Trialblock: ' + i + '</td><td>Outcome: ' + OrderedOutcomes[i] + '</td><td class=\'data-table\'>Grouping: ' + GroupingOrder[i] + '</td><td class=\'data-table\'></td></tr>';
+			ResultsMarkup = ResultsMarkup + '<tr class=\'data-table\'><td class=\'data-table\'>Trial</td><td class=\'data-table\'>Presented</td><td>Clicked</td></tr>';
+			for(var j = 0; j < CompletedTrialBlocks[i].TranslationsClicked.length; j++)
 			{
-				ResultsMarkup = ResultsMarkup + '<tr><td>' + j + '</td><td>' + CompletedTrialBlocks[i].WordsDisplayed[j].display + '</td><td>' + CompletedTrialBlocks[i].TranslationsClicked[j] + '</td></tr>';
+				ResultsMarkup = ResultsMarkup + '<tr class=\'data-table\'><td class=\'data-table\'>' + j + '</td><td class=\'data-table\'>' + CompletedTrialBlocks[i].WordsDisplayed[j].display + '</td><td>' + CompletedTrialBlocks[i].TranslationsClicked[j] + '</td></tr>';
 			}
 			ResultsMarkup = ResultsMarkup + '</table><br />';
 		}
@@ -105,6 +105,40 @@ $(function () {
 		}
 	}
 	
+	function SpecOutcomesByGroupSizeAndOutcome(size, outcomeRate) {
+		var out_array = [];
+		var fails = 0;
+		if(outcomeRate == 1)
+		{
+			fails = 1;
+		}
+		else
+		{
+			fails = size*outcomeRate;
+		}
+		for(var i = 0; i < size; i++)
+		{
+			out_array.push( (i >= fails) );
+		}
+		return Shuffle(out_array);
+	}
+	
+	function PresentSpecificOutcomes() {
+		var randProfiles = Shuffle(Profiles);
+		var spec_outcomes = SpecOutcomesByGroupSizeAndOutcome(GroupingOrder[CurrentTrialBlockIndex], OrderedOutcomes[CurrentTrialBlockIndex]);
+		var OutputMarkup = "randomly chosen failure rate: " + OrderedOutcomes[CurrentTrialBlockIndex] + "<br/><table class='data-table'><tr class='data-table'>";
+		for(var i = 0; i < GroupingOrder[CurrentTrialBlockIndex]; i++)
+		{
+			OutputMarkup = OutputMarkup + "<td class='data-table'>" + randProfiles[i].name + " " + randProfiles[i].image + " Pass?: " + spec_outcomes[i] + "</td>";
+			if(i % 3 == 2)
+			{
+				OutputMarkup = OutputMarkup + "</tr><tr>";
+			}
+		}
+		OutputMarkup = OutputMarkup + "</tr></table>";
+		$('#BlockEndScreenMessage').append( OutputMarkup );
+	}
+	
 	function PresentTrialBlockResults() {
 		feedbackMessage = TrialBlockFeedbackMessage;
 		var currentWrong = TrialsPerBlock - CurrentCorrectCount;
@@ -112,7 +146,7 @@ $(function () {
 		$('#BlockEndScreenMessage').html(TrialBlockFeedbackMessage + ' ' + personalFeedback);
 		if(Condition == 'MPSF')
 		{
-			$('#BlockEndScreenMessage').append('Specific outcome: ' + OrderedOutcomes[CurrentTrialBlockIndex]);
+			PresentSpecificOutcomes();
 		}
 		else
 		{
@@ -349,7 +383,9 @@ $(function () {
 		XMLdata.find('words').children().each(function(){
 			Words.push({ display: $(this).find('display').text(), translate: $(this).find('translate').text() });
 		});
-		//Profiles?
+		XMLdata.find('profiles').children().each(function(){
+			Profiles.push({ name: $(this).find('name').text(), image: $(this).find('image').text() });
+		});
 		$('#adminMessage').text('Ready for user log in.');
 		$('.loginControls').prop('disabled', false);
 		sessionReady = true;
