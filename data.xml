@@ -1,22 +1,25 @@
 ﻿<config>
-	<endofsessionmessage>The session has ended.  Thank you.</endofsessionmessage>
+	<endofsessionmessage>The session has ended.  Thank you.  You earned a total bonus of $</endofsessionmessage>
 	<trialblockintromessages>
 		<NMP>No member preview intro message.</NMP>
 		<MP>Member preview intro message.</MP>
 		<MPSF>Member preview with specific feedback intro message.</MPSF>
 	</trialblockintromessages>
-	<trialblockfeedbackmessages>
-		<NMP>No member preview feedback message.</NMP>
-		<MP>Member preview feedback message.</MP>
-		<MPSF>Member preview with specific feedback message.</MPSF>
-	</trialblockfeedbackmessages>
+	<negtrialblockfeedbackmessage>Your group did not reach its goal.  You did not earn a bonus.</negtrialblockfeedbackmessage>
+	<postrialblockfeedbackmessage>Your group reached its goal.  You earned a bonus of $</postrialblockfeedbackmessage>
+	<spectrialblockfeedbackmessage> members did not meet the goal.  You did not earn a bonus.</spectrialblockfeedbackmessage>
+	<bonusdollarvalue>0.5</bonusdollarvalue>
+	<correctcountgoal>6</correctcountgoal>
+	<memberpreviewtime>60000</memberpreviewtime>
 	<positivefeedback>Correct</positivefeedback>
 	<negativefeedback>Incorrect</negativefeedback>
 	<trialblocktimeout>120000</trialblocktimeout>
 	<stimulusdelay>1000</stimulusdelay>
 	<feedbackdelay>2500</feedbackdelay>
+	<profilesperrow>6</profilesperrow>
 	<groupingblockspersession>3</groupingblockspersession>
-	<trialsperblock>4</trialsperblock>
+	<trialsperblock>120</trialsperblock>
+	<passingblockspersession>6</passingblockspersession>
 	<accounts>
 		<account>
 			<username>user0</username>
@@ -60,99 +63,99 @@
 	<profiles>
 		<profile>
 			<name>Name1</name>
-			<image>Image1</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name2</name>
-			<image>Image2</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name3</name>
-			<image>Image3</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name4</name>
-			<image>Image4</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name5</name>
-			<image>Image5</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name6</name>
-			<image>Image6</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name7</name>
-			<image>Image7</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name8</name>
-			<image>Image8</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name9</name>
-			<image>Image9</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name10</name>
-			<image>Image10</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name11</name>
-			<image>Image11</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name12</name>
-			<image>Image12</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name13</name>
-			<image>Image13</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name14</name>
-			<image>Image14</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name15</name>
-			<image>Image15</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name16</name>
-			<image>Image16</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name17</name>
-			<image>Image17</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name18</name>
-			<image>Image18</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name19</name>
-			<image>Image19</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name20</name>
-			<image>Image20</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name21</name>
-			<image>Image21</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name22</name>
-			<image>Image22</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name23</name>
-			<image>Image23</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 		<profile>
 			<name>Name24</name>
-			<image>Image24</image>
+			<image>images/empty_profile.jpg</image>
 		</profile>
 	</profiles>
 </config>
