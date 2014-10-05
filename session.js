@@ -163,12 +163,12 @@ $(function () {
 		if(OrderedOutcomes[CurrentTrialBlockIndex] == "Pass" && hitTarget)
 		{
 			TotalBonusEarned += BonusDollarValue;
-			$('#BlockEndScreenMessage').append( PosTrialBlockFeedbackMessage + BonusDollarValue.toFixed(2) );
+			$('#BlockEndScreenMessage').append( PosTrialBlockFeedbackMessage.format(GroupingOrder[CurrentTrialBlockIndex], GroupingOrder[CurrentTrialBlockIndex]) );
 		}
 		else
 		{
 			var failCount = getFailCount(hitTarget);
-			$('#BlockEndScreenMessage').append( failCount + SpecTrialBlockFeedbackMessage );
+			$('#BlockEndScreenMessage').append( NegTrialBlockFeedbackMessage.format(GroupingOrder[CurrentTrialBlockIndex], GroupingOrder[CurrentTrialBlockIndex]-failCount, failCount) );
 		}
 	/*
 		var randProfiles = Shuffle(Profiles);
@@ -204,7 +204,7 @@ $(function () {
 		{
 			if(OrderedOutcomes[CurrentTrialBlockIndex] == "Pass" && hitTarget)
 			{
-				$('#BlockEndScreenMessage').append( PosTrialBlockFeedbackMessage + BonusDollarValue.toFixed(2) );
+				$('#BlockEndScreenMessage').append( PosTrialBlockFeedbackMessage );
 				TotalBonusEarned += BonusDollarValue;
 			}
 			else
@@ -337,12 +337,17 @@ $(function () {
 		$('#TrialScreen').hide();
 		KillIt = false;
 		console.log('Start TrialBlock ' + CurrentTrialBlockIndex);
+		var introMessage = '';
 		
-		var introMessage = TrialBlockIntroMessage;
-		if(Condition == 'NMP')
+		if(parseInt(GroupingOrder[CurrentTrialBlockIndex]) == 2)
 		{
-			introMessage = introMessage + ' Group size: ' + GroupingOrder[CurrentTrialBlockIndex];
+			introMessage = TrialBlockIntroMessage.single;
 		}
+		else
+		{
+			introMessage = TrialBlockIntroMessage.plural;
+		}
+		introMessage = introMessage.format(GroupingOrder[CurrentTrialBlockIndex], CorrectCountGoal);
 		$('#blockIntroMessage').text(introMessage);
 		$('#blockIntroScreen').show();
 		CurrentTrialIndex = 0;
@@ -355,7 +360,7 @@ $(function () {
 		var previewMarkup = '<center><table>';
 		var memberCount = GroupingOrder[CurrentTrialBlockIndex];
 		var i;
-		for(i = 0; i < memberCount; i++)
+		for(i = 0; i < memberCount-1; i++)
 		{
 			if(i % ProfilesPerRow == 0)
 			{
@@ -497,10 +502,10 @@ $(function () {
 	function FileLoaded() {
 		Condition = $('#feedbackCondition').val();
 		EndOfSessionMessage = XMLdata.find('endofsessionmessage').text();
-		TrialBlockIntroMessage = XMLdata.find('trialblockintromessages').find(Condition).text();
-		NegTrialBlockFeedbackMessage = XMLdata.find('negtrialblockfeedbackmessage').text();
-		PosTrialBlockFeedbackMessage = XMLdata.find('postrialblockfeedbackmessage').text();
-		SpecTrialBlockFeedbackMessage = XMLdata.find('spectrialblockfeedbackmessage').text();
+		TrialBlockIntroMessage = { single: XMLdata.find('trialblockintromessages').find(Condition).find('single').text(), plural: XMLdata.find('trialblockintromessages').find(Condition).find('plural').text() }
+		NegTrialBlockFeedbackMessage = XMLdata.find('negtrialblockfeedbackmessage').find(Condition).text();
+		PosTrialBlockFeedbackMessage = XMLdata.find('postrialblockfeedbackmessage').find(Condition).text();
+		SpecTrialBlockFeedbackMessage = XMLdata.find('spectrialblockfeedbackmessage').find(Condition).text();
 		TrialBlockTimeout = XMLdata.find('trialblocktimeout').text();
 		StimulusDelay = XMLdata.find('stimulusdelay').text();
 		FeedbackDelay = XMLdata.find('feedbackdelay').text();
@@ -544,5 +549,15 @@ $(function () {
 		for (var j, x, i = arr.length; i; j = parseInt(Math.random() * i), x = arr[--i], arr[i] = arr[j], arr[j] = x);
 		
 		return arr;
+	}
+	
+	String.prototype.format = String.prototype.f = function() {
+		var s = this,
+			i = arguments.length;
+
+		while (i--) {
+			s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
+		}
+		return s;
 	}
 });

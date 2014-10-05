@@ -1,12 +1,29 @@
 ﻿<config>
 	<endofsessionmessage>The session has ended.  Thank you.  You earned a total bonus of $</endofsessionmessage>
 	<trialblockintromessages>
-		<NMP>No member preview intro message.</NMP>
-		<MP>Member preview intro message.</MP>
-		<MPSF>Member preview with specific feedback intro message.</MPSF>
+		<NMP>
+			<single>You have been placed in a group of {0} members in this trial block. If you and the other group member meet the goal of making {1} selections before the end of the trial block, each one of you will earn a bonus. Bonuses may be exchanged for money at the end of the session. This means you must make at least {1} correct responses to meet your individual goal. At the end of the trial block, you and the other group member will find out whether all members in the group met their individual goal or not.</single>
+			<plural>You have been placed in a group of {0} members in this trial block. If you and the other group members meet the goal of making {1} selections before the end of the trial block, each one of you will earn a bonus. Bonuses may be exchanged for money at the end of the session. This means you must make at least {1} correct responses to meet your individual goal. At the end of the trial block, you and the other group members will find out whether all members in the group met their individual goal or not.</plural>
+		</NMP>
+		<MP>
+			<single>You have been placed in a group of {0} members in this trial block. On your screen, you will see some information about the other group member. Please take a moment to review the profile. If you and the other group member meet the goal of making {1} selections before the end of the trial block, each one of you will earn a bonus. Bonuses may be exchanged for money at the end of the session. This means you must make at least {1} correct responses to meet your individual goal. At the end of the trial block, you and the other group member will find out whether all members in the group met their individual goal or not.</single>
+			<plural>You have been placed in a group of {0} members in this trial block. On your screen, you will see some information about the other group members. Please take a moment to review the profile. If you and the other group member meet the goal of making {1} selections before the end of the trial block, each one of you will earn a bonus. Bonuses may be exchanged for money at the end of the session. This means you must make at least {1} correct responses to meet your individual goal. At the end of the trial block, you and the other group members will find out whether all members in the group met their individual goal or not.</plural>
+		</MP>
+		<MPSF>
+			<single>You have been placed in a group of {0} members in this trial block. On your screen, you will see some information about the other group member. Please take a moment to review the profile. If you and the other group member meet the goal of making {1} selections before the end of the trial block, each one of you will earn a bonus. Bonuses may be exchanged for money at the end of the session. This means you must make at least {1} correct responses to meet your individual goal. At the end of the trial block, you and the other group member will find out the number of members who met their individual goal and the number of members who did not meet their individual goal.</single>
+			<plural>You have been placed in a group of {0} members in this trial block. On your screen, you will see some information about the other group members. Please take a moment to review the profile. If you and the other group member meet the goal of making {1} selections before the end of the trial block, each one of you will earn a bonus. Bonuses may be exchanged for money at the end of the session. This means you must make at least {1} correct responses to meet your individual goal. At the end of the trial block, you and the other group members will find out the number of members who met their individual goal and the number of members who did not meet their individual goal.</plural>
+		</MPSF>
 	</trialblockintromessages>
-	<negtrialblockfeedbackmessage>Your group did not reach its goal.  You did not earn a bonus.</negtrialblockfeedbackmessage>
-	<postrialblockfeedbackmessage>Your group reached its goal.  You earned a bonus of $</postrialblockfeedbackmessage>
+	<negtrialblockfeedbackmessage>
+		<NMP>Your group did not meet their goal and no one will receive a bonus.</NMP>
+		<MP>Your group did not meet their goal and no one will receive a bonus.</MP>
+		<MPSF>Of the {0} members in your group, {1} met their goal and {2} did not. Therefore, no one in your group will receive a bonus.</MPSF>
+	</negtrialblockfeedbackmessage>
+	<postrialblockfeedbackmessage>
+		<NMP>Your group met their goal and each member will receive a bonus.</NMP>
+		<MP>Your group met their goal and each member will receive a bonus.</MP>
+		<MPSF>Of the {0} members in your group, {1} met their goal. Therefore, each member in your group will receive a bonus.</MPSF>
+	</postrialblockfeedbackmessage>
 	<spectrialblockfeedbackmessage> members did not meet the goal.  You did not earn a bonus.</spectrialblockfeedbackmessage>
 	<bonusdollarvalue>0.5</bonusdollarvalue>
 	<correctcountgoal>6</correctcountgoal>
