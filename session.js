@@ -234,6 +234,7 @@ $(function () {
 	}
 	
 	function EndTrial() {
+		$('#TrialScreen').removeClass('incorrect correct');
 		if(KillIt)
 		{
 			KillIt = false;
@@ -261,12 +262,12 @@ $(function () {
 		if(userCorrect)
 		{
 			CurrentCorrectCount = CurrentCorrectCount + 1;
-			$('#TrialScreen').html(PositiveFeedbackMessage);
+			$('#TrialScreen').addClass('correct').html(PositiveFeedbackMessage);
 		}
 		else
 		{
 			CurrentIncorrectCount = CurrentIncorrectCount + 1;
-			$('#TrialScreen').html(NegativeFeedbackMessage);
+			$('#TrialScreen').addClass('incorrect').html(NegativeFeedbackMessage);
 		}
 		console.log('Waiting ' + FeedbackDelay + 'ms');
 		$('#TrialScreen').show();
@@ -326,33 +327,21 @@ $(function () {
 		setTimeout(DisplayOptions, StimulusDelay);
 	}
 	
-	function BeginTrialBlockButtonClick() {
+	function FinishTrialIntro() {
 		$('#blockIntroScreen').hide();
 		TimeoutTrialBlock(CurrentTrialBlockIndex);
 		ConductTrial();
 	}
 	
-	function BeginTrials() {
-		$('#TrialScreen').html('');
-		$('#TrialScreen').hide();
-		KillIt = false;
-		console.log('Start TrialBlock ' + CurrentTrialBlockIndex);
-		var introMessage = '';
-		
-		if(parseInt(GroupingOrder[CurrentTrialBlockIndex]) == 2)
+	function BeginTrialBlockButtonClick() {
+		if( displayMemberPreview() )
 		{
-			introMessage = TrialBlockIntroMessage.single;
+			memberPreview();
 		}
 		else
 		{
-			introMessage = TrialBlockIntroMessage.plural;
+			FinishTrialIntro();
 		}
-		introMessage = introMessage.format(GroupingOrder[CurrentTrialBlockIndex], CorrectCountGoal);
-		$('#blockIntroMessage').text(introMessage);
-		$('#blockIntroScreen').show();
-		CurrentTrialIndex = 0;
-		CurrentCorrectCount = 0;
-		CurrentIncorrectCount = 0;
 	}
 	
 	function memberPreview() {
@@ -377,21 +366,33 @@ $(function () {
 			previewMarkup += '</tr>';
 		}
 		previewMarkup += '</table></center>';
+		$('#blockIntroScreen').hide();
 		$('#TrialScreen').html(previewMarkup);
 		$('#TrialScreen').show();
-		setTimeout(BeginTrials, MemberPreviewTime);
+		setTimeout(FinishTrialIntro, MemberPreviewTime*memberCount);
 	}
 	
 	function StartTrialBlock() {
-		if( displayMemberPreview() )
+		$('#TrialScreen').html('');
+		$('#TrialScreen').hide();
+		KillIt = false;
+		console.log('Start TrialBlock ' + CurrentTrialBlockIndex);
+		var introMessage = '';
+		
+		if(parseInt(GroupingOrder[CurrentTrialBlockIndex]) == 2)
 		{
-			memberPreview();
+			introMessage = TrialBlockIntroMessage.single;
 		}
 		else
 		{
-			BeginTrials();
+			introMessage = TrialBlockIntroMessage.plural;
 		}
-		
+		introMessage = introMessage.format(GroupingOrder[CurrentTrialBlockIndex], CorrectCountGoal);
+		$('#blockIntroMessage').text(introMessage);
+		$('#blockIntroScreen').show();
+		CurrentTrialIndex = 0;
+		CurrentCorrectCount = 0;
+		CurrentIncorrectCount = 0;
 	}
 	
 	function StartSession() {

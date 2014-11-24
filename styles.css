@@ -2,6 +2,14 @@
 	border: solid;
 }
 
+.correct {
+	color: #00FF00;
+}
+
+.incorrect {
+	color: #FF0000;
+}
+
 #OptionsWrapper{
 	width: 50%;
 	margin-left: 25%;

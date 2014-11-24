@@ -27,7 +27,7 @@
 	<spectrialblockfeedbackmessage> members did not meet the goal.  You did not earn a bonus.</spectrialblockfeedbackmessage>
 	<bonusdollarvalue>0.5</bonusdollarvalue>
 	<correctcountgoal>6</correctcountgoal>
-	<memberpreviewtime>60000</memberpreviewtime>
+	<memberpreviewtime>1000</memberpreviewtime>
 	<positivefeedback>Correct</positivefeedback>
 	<negativefeedback>Incorrect</negativefeedback>
 	<trialblocktimeout>120000</trialblocktimeout>
